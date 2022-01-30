@@ -9,9 +9,11 @@ class dbInteraction:
         conn = db.connect(user=dbcreds.user, password=dbcreds.password,
                           host=dbcreds.host, port=dbcreds.port, database=dbcreds.database)
         cursor = conn.cursor()
-
         cursor.execute(
-            f"INSERT INTO python_blog.blog_post(username, content) VALUES('{username}', '{content}')")
+            f"select id from users where username = '{username}'")
+        user = cursor.fetchone()
+        cursor.execute(
+            f"INSERT INTO python_blog.blog_post(content, user_id) VALUES('{content}', '{user[0]}')")
         conn.commit()
         cursor.close()
         conn.close()
@@ -30,9 +32,7 @@ class dbInteraction:
         for post in posts:
             print(post[0], ':', post[1])
 
-    def user_login():
-        username = input("Enter a username: ")
-        password = input("Enter your password: ")
+    def user_login(username, password):
         conn = db.connect(user=dbcreds.user, password=dbcreds.password,
                           host=dbcreds.host, port=dbcreds.port, database=dbcreds.database)
         cursor = conn.cursor()
@@ -44,9 +44,7 @@ class dbInteraction:
         conn.close()
         if(user == []):
             print("Invalid username or password!")
+            return False
         else:
             for i in user:
                 print(f'Welcome ', i[1])
-
-
-username = 'foo'
