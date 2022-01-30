@@ -24,13 +24,13 @@ class dbInteraction:
         cursor = conn.cursor()
 
         cursor.execute(
-            f"select *  from blog_post")
+            f"select content, users.username  from blog_post inner join users on users.id = blog_post.user_id")
         posts = cursor.fetchall()
 
         cursor.close()
         conn.close()
         for post in posts:
-            print(post[0], ':', post[1])
+            print(post[1], ':', post[0])
 
     def user_login(username, password):
         conn = db.connect(user=dbcreds.user, password=dbcreds.password,
