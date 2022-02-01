@@ -1,5 +1,7 @@
 import dbcreds
 import mariadb as db
+from colorama import init, Fore, Back, Style
+init(autoreset=True)
 
 
 class dbInteraction:
@@ -20,7 +22,7 @@ class dbInteraction:
     # Commit our changes to the DB, close the cursor and then close the connection
 
     def write_post(self, username):
-        content = input('Write your post:')
+        content = input(Fore.YELLOW + 'Write your post:')
         conn, cursor = self.db_connect()
         cursor.execute(
             f"select id from users where username = '{username}'")
@@ -40,7 +42,8 @@ class dbInteraction:
         posts = cursor.fetchall()
         self.db_disconnect(conn, cursor)
         for post in posts:
-            print(post[1], ' : ', post[0])
+            print(Fore.RED + post[1], Fore.YELLOW +
+                  ' : ', Fore.GREEN + post[0])
 # Function that takes in the username and password, creates connection to DB, creates cursor and runs a
 # select query to grab username and password where the username and password matches that of the arguments given
 # Check to see if our user variable is empty from select query, if it is we return false since no username and password from the DB matched
@@ -53,14 +56,16 @@ class dbInteraction:
         user = cursor.fetchone()
         self.db_disconnect(conn, cursor)
         if(user == None):
-            print("Invalid username or password!")
+            print(Fore.RED + "Invalid username or password!")
             return False
         else:
             print(f'Welcome ', user[1])
 
     def user_signup(self):
-        username = input("Select a username: ")
-        password = input("Select a password: ")
+        print(Fore.BLUE + "Select a username: ", end='')
+        username = input()
+        print(Fore.BLUE + "Select a password: ", end='')
+        password = input()
         conn, cursor = self.db_connect()
         cursor.execute(
             f"INSERT INTO users (username, password) VALUES ('{username}', '{password}')")

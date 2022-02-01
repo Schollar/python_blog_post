@@ -6,13 +6,20 @@ db = dbh.dbInteraction()
 
 
 def log_in():
-    print('Please login to continue')
-    username = input("Enter a username: ")
-    password = input("Enter your password: ")
-    if(db.user_login(username, password) == False):
+    try:
+
+        print('Please login to continue')
+        print(Fore.BLUE + "Enter a username: ", end='')
+        username = input()
+        print(Fore.BLUE + "Enter a password: ", end='')
+        password = input()
+        if(db.user_login(username, password) == False):
+            exit()
+        else:
+            logged_in(username)
+    except KeyboardInterrupt:
+        print(Fore.RED + 'You have quit the app!')
         exit()
-    else:
-        logged_in(username)
 
 
 def logged_in(username):
@@ -24,32 +31,36 @@ def logged_in(username):
             print('Type', Fore.RED + "exit", 'to exit the app')
             selection = input("Select an option: ")
             if(selection == 'exit'):
-                print('Thank you come again!')
+                print(Fore.RED + 'Thank you come again!')
                 exit()
             elif(float(selection) == 1):
                 db.write_post(username)
             elif(float(selection) == 2):
                 db.show_posts()
             else:
-                print('You must select a valid option')
+                print(Fore.RED + 'You must select a valid option')
         except KeyboardInterrupt:
             print('You have quit the app!')
             exit()
 
 
 # Printing welcome message, taking in username and password inputs from user and saving to a variable
-print('Welcome to the Blog Site')
-print('Please select an option: ')
-print(Fore.RED + '1. Signup')
-print(Fore.GREEN + '2. Login')
-selection = input("Select an option: ")
-if(float(selection) == 1):
-    db.user_signup()
-    log_in()
-elif(float(selection) == 2):
-    log_in()
-else:
-    print(Fore.RED + 'Please Pick a valid option!')
+try:
+    print('Welcome to the Blog Site')
+    print('Please select an option: ')
+    print(Fore.RED + '1. Signup')
+    print(Fore.GREEN + '2. Login')
+    selection = input("Select an option: ")
+    if(float(selection) == 1):
+        db.user_signup()
+        log_in()
+    elif(float(selection) == 2):
+        log_in()
+    else:
+        print(Fore.RED + 'Please Pick a valid option!')
+except KeyboardInterrupt:
+    print(Fore.RED + 'You have quit the app!')
+    exit()
     # If our user login function returns false, we exit the program, else the user has logged in and we run the loop.
 
     # Infinite loop that runs once user is logged in, user can make a selection and based on user selection a function gets
