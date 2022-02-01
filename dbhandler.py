@@ -49,10 +49,10 @@ class dbInteraction:
 
         cursor.execute(
             f"SELECT * FROM users WHERE username = '{username}' and password = '{password}'")
-        user = cursor.fetchall()
+        user = cursor.fetchone()
         cursor.close()
         conn.close()
-        if(user == []):
+        if(user == None):
             print("Invalid username or password!")
             return False
         else:
