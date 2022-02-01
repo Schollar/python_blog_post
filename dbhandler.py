@@ -57,3 +57,12 @@ class dbInteraction:
             return False
         else:
             print(f'Welcome ', user[1])
+
+    def user_signup(self):
+        username = input("Select a username: ")
+        password = input("Select a password: ")
+        conn, cursor = self.db_connect()
+        cursor.execute(
+            f"INSERT INTO users (username, password) VALUES ('{username}', '{password}')")
+        conn.commit()
+        self.db_disconnect(conn, cursor)
